@@ -16,14 +16,14 @@ class CharactersNetworkManager {
         var query: String {
             switch self {
             case .getCharactersByPage(let pageNumber):
-                return "/?page=\(pageNumber)"
+                return "/character/?page=\(pageNumber)"
             }
         }
     }
     
     private let networkManager = NetworkManager.shared
     
-    func getSuggestedContacts(number: Int, completion: @escaping (Result<[Character], NetworkError>) -> Void) {
+    func getCharactersByPage(number: Int, completion: @escaping (Result<[Character], NetworkError>) -> Void) {
         networkManager.sendRequest(
             endpoint: Endpoints.getCharactersByPage(number),
             completion: { (result: Result<CharactersResponse, NetworkError>) in

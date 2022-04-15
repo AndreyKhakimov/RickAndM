@@ -8,6 +8,7 @@
 import Foundation
 
 struct Character: Decodable {
+    let id: Int
     let name: String
     let status: String
     let species: String
@@ -28,6 +29,10 @@ struct Character: Decodable {
     Location: \(location.name)
     Episodes: \(episode.count)
     """
+    }
+    
+    var smallDescription: String {
+        "\(gender), \(species)"
     }
 }
 
