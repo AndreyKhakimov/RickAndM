@@ -91,16 +91,13 @@
 		42AD70682808A24A00817752 /* RickAndM */ = {
 			isa = PBXGroup;
 			children = (
-				42AD70A32809EEC000817752 /* Extensions */,
 				42AD709A2809E60C00817752 /* Models */,
+				42AD707F2808B64900817752 /* ViewControllers */,
 				42AD708E2808C23700817752 /* Network */,
 				42AD70802808B6DB00817752 /* Views */,
-				42AD70692808A24A00817752 /* AppDelegate.swift */,
-				42AD706B2808A24A00817752 /* SceneDelegate.swift */,
-				42AD707F2808B64900817752 /* ViewControllers */,
-				42AD70722808A24C00817752 /* Assets.xcassets */,
-				42AD70742808A24C00817752 /* LaunchScreen.storyboard */,
-				42AD70772808A24C00817752 /* Info.plist */,
+				42AD70A32809EEC000817752 /* Extensions */,
+				42AD70AA280B41E700817752 /* App */,
+				42AD70AB280B436C00817752 /* Resources */,
 			);
 			path = RickAndM;
 			sourceTree = "<group>";
@@ -117,6 +114,7 @@
 		42AD70802808B6DB00817752 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				42AD70742808A24C00817752 /* LaunchScreen.storyboard */,
 				42AD70892808BD7400817752 /* ImageViews */,
 				42AD70812808B6E500817752 /* Cells */,
 			);
@@ -182,6 +180,24 @@
 				42AD70A02809EEA200817752 /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		42AD70AA280B41E700817752 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				42AD70692808A24A00817752 /* AppDelegate.swift */,
+				42AD706B2808A24A00817752 /* SceneDelegate.swift */,
+				42AD70772808A24C00817752 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		42AD70AB280B436C00817752 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				42AD70722808A24C00817752 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C8E59676345F4EB06E2B9141 /* Pods */ = {
@@ -464,7 +480,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3PVRW477K7;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RickAndM/Info.plist;
+				INFOPLIST_FILE = RickAndM/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -493,7 +509,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3PVRW477K7;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RickAndM/Info.plist;
+				INFOPLIST_FILE = RickAndM/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

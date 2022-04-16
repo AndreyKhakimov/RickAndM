@@ -21,9 +21,8 @@ extension UIViewController {
 extension UILabel {
     
     func setLineHeight(lineHeight: CGFloat) {
-//        guard let text = self.text else { return }
-        
-        let attributeString = NSMutableAttributedString(string: self.text ?? "")
+        guard let text = self.text else { return }
+        let attributeString = NSMutableAttributedString(string: text)
         let style = NSMutableParagraphStyle()
         
         style.lineSpacing = lineHeight

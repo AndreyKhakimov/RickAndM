@@ -26,13 +26,13 @@ class CharactersNetworkManager {
     
     private let networkManager = NetworkManager.shared
     
-    func getCharactersByPage(number: Int, completion: @escaping (Result<[Character], NetworkError>) -> Void) {
+    func getCharactersByPage(number: Int, completion: @escaping (Result<CharactersResponse, NetworkError>) -> Void) {
         networkManager.sendRequest(
             endpoint: Endpoints.getCharactersByPage(number),
             completion: { (result: Result<CharactersResponse, NetworkError>) in
                 switch result {
                 case .success(let characters):
-                    completion(.success(characters.results))
+                    completion(.success(characters))
                     
                 case .failure(let error):
                     completion(.failure(error))
@@ -45,6 +45,21 @@ class CharactersNetworkManager {
         networkManager.sendRequest(
             endpoint: Endpoints.getSingleCharacter(id),
             completion: { (result: Result<Character, NetworkError>) in
+                switch result {
+                case .success(let character):
+                    completion(.success(character))
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        )
+    }
+    
+    func getCharacters(url: String, completion: @escaping (Result<CharactersResponse, NetworkError>) -> Void) {
+        networkManager.sendRequestWithURL(
+            url: url,
+            completion: { (result: Result<CharactersResponse, NetworkError>) in
                 switch result {
                 case .success(let character):
                     completion(.success(character))
