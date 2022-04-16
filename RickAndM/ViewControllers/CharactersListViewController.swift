@@ -29,6 +29,7 @@ class CharactersListViewController: UIViewController {
     private func setupNavigationBar() {
         title = "CharactersList"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .white
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
@@ -46,6 +47,28 @@ class CharactersListViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Next",
+            style: .plain,
+            target: self,
+            action: #selector(loadNextPage)
+        )
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Prev",
+            style: .plain,
+            target: self,
+            action: #selector(loadPreviousPage)
+        )
+        
+    }
+    
+    @objc private func loadNextPage() {
+        
+    }
+    
+    @objc private func loadPreviousPage() {
+        
     }
     
     private func setupTableView() {
@@ -59,7 +82,7 @@ class CharactersListViewController: UIViewController {
         ])
         charactersTableView.rowHeight = 60
     }
-
+    
     
     private func fetchData(with pageNumber: Int) {
         charactersNetworkManager.getCharactersByPage(
@@ -109,5 +132,6 @@ extension CharactersListViewController: UITableViewDelegate {
         let characterInfoVC = CharacterInfoViewController()
         characterInfoVC.id = character.id
         navigationController?.pushViewController(characterInfoVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -24,7 +24,6 @@
 		42AD709C2809E62300817752 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD709B2809E62300817752 /* Character.swift */; };
 		42AD709F2809E68200817752 /* CharactersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD709E2809E68200817752 /* CharactersResponse.swift */; };
 		42AD70A12809EEA200817752 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD70A02809EEA200817752 /* Extensions.swift */; };
-		42AD70A9280A0D3700817752 /* SingleCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD70A8280A0D3700817752 /* SingleCharacter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +46,6 @@
 		42AD709B2809E62300817752 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		42AD709E2809E68200817752 /* CharactersResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersResponse.swift; sourceTree = "<group>"; };
 		42AD70A02809EEA200817752 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		42AD70A8280A0D3700817752 /* SingleCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCharacter.swift; sourceTree = "<group>"; };
 		A2DB5F823987B271747FCEFA /* Pods_RickAndM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RickAndM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E02756E61994D80BEA554556 /* Pods-RickAndM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RickAndM.release.xcconfig"; path = "Target Support Files/Pods-RickAndM/Pods-RickAndM.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,7 +147,6 @@
 				42AD70982808C2C800817752 /* NetworkManager.swift */,
 				42AD70942808C2B800817752 /* NetworkError.swift */,
 				42AD708F2808C24300817752 /* Characters */,
-				42AD70A7280A0D1F00817752 /* Character */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -185,14 +182,6 @@
 				42AD70A02809EEA200817752 /* Extensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		42AD70A7280A0D1F00817752 /* Character */ = {
-			isa = PBXGroup;
-			children = (
-				42AD70A8280A0D3700817752 /* SingleCharacter.swift */,
-			);
-			path = Character;
 			sourceTree = "<group>";
 		};
 		C8E59676345F4EB06E2B9141 /* Pods */ = {
@@ -328,7 +317,6 @@
 				42AD709F2809E68200817752 /* CharactersResponse.swift in Sources */,
 				42AD706E2808A24A00817752 /* CharactersListViewController.swift in Sources */,
 				42AD70A12809EEA200817752 /* Extensions.swift in Sources */,
-				42AD70A9280A0D3700817752 /* SingleCharacter.swift in Sources */,
 				42AD708B2808BDAF00817752 /* RoundedImageView.swift in Sources */,
 				42AD70842808B71D00817752 /* CharacterTableViewCell.swift in Sources */,
 				42AD706A2808A24A00817752 /* AppDelegate.swift in Sources */,

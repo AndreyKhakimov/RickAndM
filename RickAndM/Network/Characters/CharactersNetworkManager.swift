@@ -12,11 +12,14 @@ class CharactersNetworkManager {
     private enum Endpoints: EndpointProtocol {
         
         case getCharactersByPage(Int)
+        case getSingleCharacter(Int)
         
         var query: String {
             switch self {
             case .getCharactersByPage(let pageNumber):
                 return "/character/?page=\(pageNumber)"
+            case .getSingleCharacter(let id):
+                return "/character/\(id)"
             }
         }
     }
@@ -30,6 +33,21 @@ class CharactersNetworkManager {
                 switch result {
                 case .success(let characters):
                     completion(.success(characters.results))
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        )
+    }
+    
+    func getCharacter(id: Int, completion: @escaping (Result<Character, NetworkError>) -> Void) {
+        networkManager.sendRequest(
+            endpoint: Endpoints.getSingleCharacter(id),
+            completion: { (result: Result<Character, NetworkError>) in
+                switch result {
+                case .success(let character):
+                    completion(.success(character))
                     
                 case .failure(let error):
                     completion(.failure(error))
