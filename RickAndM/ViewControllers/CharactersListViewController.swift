@@ -15,23 +15,71 @@ class CharactersListViewController: UIViewController {
         return tableview
     }()
     
-    private let charactersNetworkManager = CharactersNetworkManager()
+    private let titleLabel: UILabel = {
+        let label = UILabel.init(frame: CGRect.init(x: 0, y: 30, width: 104, height: 24))
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textAlignment = .center
+        return label
+    }()
     
+    private let charactersNetworkManager = CharactersNetworkManager()
     private var characters = [Character]()
     private var charactersResponse: CharactersResponse?
+    
+    private var currentPage = 1 {
+        didSet {
+            updateBarButtonItems()
+        }
+    }
+    private var pagesCount = 0 {
+        didSet {
+            updateBarButtonItems()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(charactersTableView)
-
+        
         charactersTableView.dataSource = self
         charactersTableView.delegate = self
         setupNavigationBar()
         setupTableView()
+        updateBarButtonItems()
         fetchData(with: 1)
     }
     
+    @objc private func updatePageData(_ sender: UIBarButtonItem) {
+        currentPage += sender.tag == 1 ? 1 : -1
+        fetchData(with: currentPage)
+    }
+    
+    // MARK: - Fetching Data
+    private func fetchData(with pageNumber: Int) {
+        charactersNetworkManager.getCharactersByPage(
+            number: pageNumber,
+            completion: { [weak self] result in
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
+                    
+                    switch result {
+                    case .success(let charactersResponse):
+                        self.pagesCount = charactersResponse.info.pages
+                        self.charactersResponse = charactersResponse
+                        self.characters = charactersResponse.results
+                        self.charactersTableView.reloadData()
+                        self.updateTitle()
+                    case .failure(let error):
+                        self.showAlert(title: error.title, message: error.description)
+                    }
+                }
+            }
+        )
+    }
+    
+    // MARK: - Setup Views
     private func setupNavigationBar() {
         title = "CharactersList"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -68,13 +116,7 @@ class CharactersListViewController: UIViewController {
             target: self,
             action: #selector(updatePageData)
         )
-        
-    }
-    
-    @objc private func updatePageData(_ sender: UIBarButtonItem) {
-        sender.tag == 1
-        ? fetchPageData(with: charactersResponse?.info.next ?? "")
-        : fetchPageData(with: charactersResponse?.info.prev ?? "")
+        navigationItem.titleView = titleLabel
     }
     
     private func setupTableView() {
@@ -89,52 +131,26 @@ class CharactersListViewController: UIViewController {
         charactersTableView.rowHeight = 60
     }
     
-    // MARK: - Fetching data
-    private func fetchData(with pageNumber: Int) {
-        charactersNetworkManager.getCharactersByPage(
-            number: pageNumber,
-            completion: { [weak self] result in
-                DispatchQueue.main.async {
-                    guard let self = self else { return }
-                    
-                    switch result {
-                    case .success(let charactersResponse):
-                        self.charactersResponse = charactersResponse
-                        self.characters = charactersResponse.results
-                        self.charactersTableView.reloadData()
-                    case .failure(let error):
-                        self.showAlert(title: error.title, message: error.description)
-                    }
-                }
-            }
-        )
+    private func updateTitle() {
+        titleLabel.text = "Page \(currentPage)/\(pagesCount)"
     }
     
-    private func fetchPageData(with URL: String) {
-        charactersNetworkManager.getCharacters(
-            url: URL,
-            completion: { [weak self] result in
-                DispatchQueue.main.async {
-                    guard let self = self else { return }
-                    
-                    switch result {
-                    case .success(let characters):
-                        self.characters = characters.results
-                        self.charactersResponse = characters
-                        self.charactersTableView.reloadData()
-                    case .failure(let error):
-                        self.showAlert(title: error.title, message: error.description)
-                    }
-                }
-            }
-        )
+    private func updateBarButtonItems() {
+        if currentPage <= 1 {
+            navigationItem.leftBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem.leftBarButtonItem?.isEnabled = true
+        }
+        if currentPage == pagesCount {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        }
     }
-    
     
 }
 
 // MARK: - TableView Datasource Methods
-
 extension CharactersListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         characters.count
@@ -152,7 +168,6 @@ extension CharactersListViewController: UITableViewDataSource {
 }
 
 // MARK: - TableView Delegate Methods
-
 extension CharactersListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let character = characters[indexPath.row]

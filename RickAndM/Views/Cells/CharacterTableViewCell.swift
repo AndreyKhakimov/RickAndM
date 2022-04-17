@@ -15,15 +15,10 @@ class CharacterTableViewCell: UITableViewCell {
     @IBOutlet weak var characterNameLabel: UILabel!
     @IBOutlet weak var characterInfoLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        characterImageView.kf.cancelDownloadTask()
+        characterImageView.image = UIImage(systemName: "photo.artframe")
     }
     
     func configure(image: URL?, name: String, info: String) {

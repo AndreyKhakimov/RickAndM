@@ -13,15 +13,12 @@ struct Character: Decodable {
     let status: String
     let species: String
     let gender: String
-    let origin: Origin
     let location: Location
     let image: String
     let episode: [String]
-    let url: String
-    let created: String
     
     var description: String {
-        """
+    """
     Name: \(name)
     Species: \(species)
     Gender: \(gender)
@@ -34,10 +31,6 @@ struct Character: Decodable {
     var smallDescription: String {
         "\(gender), \(species)"
     }
-}
-
-struct Origin: Decodable {
-    let name: String
 }
 
 struct Location: Decodable {

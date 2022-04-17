@@ -56,19 +56,4 @@ class CharactersNetworkManager {
         )
     }
     
-    func getCharacters(url: String, completion: @escaping (Result<CharactersResponse, NetworkError>) -> Void) {
-        networkManager.sendRequestWithURL(
-            url: url,
-            completion: { (result: Result<CharactersResponse, NetworkError>) in
-                switch result {
-                case .success(let character):
-                    completion(.success(character))
-                    
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
-        )
-    }
-    
 }

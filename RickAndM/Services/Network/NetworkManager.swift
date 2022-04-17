@@ -42,34 +42,6 @@ class NetworkManager {
         }.resume()
     }
     
-    func sendRequestWithURL<Response: Decodable>(url: String, completion: @escaping (Result<Response, NetworkError>) -> Void) {
-        guard let url = URL(string: url) else { return }
-        let request = URLRequest(url: url)
-        
-        URLSession.shared.dataTask(with: request) { data, _, error in
-            if let error = error {
-                completion(.failure(.other(error)))
-                return
-            }
-            
-            var data = data
-            if Response.self == Void.self {
-                data = Data()
-            }
-            guard let data = data
-            else {
-                completion(.failure(.noData))
-                return
-            }
-            do {
-                let result = try JSONDecoder().decode(Response.self, from: data)
-                completion(.success(result))
-            } catch {
-                completion(.failure(.decodingError))
-            }
-        }.resume()
-    }
-    
 }
 
 

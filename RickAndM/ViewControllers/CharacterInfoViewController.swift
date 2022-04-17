@@ -10,16 +10,29 @@ import Kingfisher
 
 class CharacterInfoViewController: UIViewController {
     
+    var id: Int?
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private var character: Character?
     private let characterNetworkManager = CharactersNetworkManager()
-    var id: Int?
+    private var character: Character?
     
     private lazy var characterImageView: RoundedImageView = {
         let imageView = RoundedImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Character"
+        label.numberOfLines = 0
+        label.sizeToFit()
+        label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.setLineHeight(lineHeight: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     override func viewDidLoad() {
@@ -51,45 +64,41 @@ class CharacterInfoViewController: UIViewController {
         )
     }
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Character"
-        label.numberOfLines = 0
-        label.sizeToFit()
-        label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.setLineHeight(lineHeight: 20)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
 }
-
+// MARK: - Setup Views
 extension CharacterInfoViewController {
     func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
     }
     
     func setupViews(){
         contentView.addSubview(characterImageView)
-        characterImageView.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        characterImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-        characterImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25).isActive = true
-        characterImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         contentView.addSubview(titleLabel)
-        titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 25).isActive = true
-        titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16).isActive = true
-        titleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 3/4).isActive = true
+        
+        NSLayoutConstraint.activate([
+            characterImageView.widthAnchor.constraint(equalToConstant: 250),
+            characterImageView.heightAnchor.constraint(equalToConstant: 250),
+            characterImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
+            characterImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 25),
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            titleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 3/4)
+        ])
     }
 }
