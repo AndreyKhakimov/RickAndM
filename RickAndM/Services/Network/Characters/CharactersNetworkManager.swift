@@ -26,7 +26,8 @@ class CharactersNetworkManager {
     
     private let networkManager = NetworkManager.shared
     
-    func getCharactersByPage(number: Int, completion: @escaping (Result<CharactersResponse, NetworkError>) -> Void) {
+    @discardableResult
+    func getCharactersByPage(number: Int, completion: @escaping (Result<CharactersResponse, NetworkError>) -> Void) -> URLSessionDataTask {
         networkManager.sendRequest(
             endpoint: Endpoints.getCharactersByPage(number),
             completion: { (result: Result<CharactersResponse, NetworkError>) in

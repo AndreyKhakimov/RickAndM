@@ -15,28 +15,13 @@ class CharactersListViewController: UIViewController {
         return tableview
     }()
     
-    private let titleLabel: UILabel = {
-        let label = UILabel.init(frame: CGRect.init(x: 0, y: 30, width: 104, height: 24))
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textAlignment = .center
-        return label
-    }()
-    
     private let charactersNetworkManager = CharactersNetworkManager()
     private var characters = [Character]()
     private var charactersResponse: CharactersResponse?
-    
-    private var currentPage = 1 {
-        didSet {
-            updateBarButtonItems()
-        }
-    }
-    private var pagesCount = 0 {
-        didSet {
-            updateBarButtonItems()
-        }
-    }
+    private var isPaginating = false
+    private var paginationDataTask: URLSessionDataTask?
+    private var currentPage = 1
+    private var pagesCount = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,35 +30,38 @@ class CharactersListViewController: UIViewController {
         
         charactersTableView.dataSource = self
         charactersTableView.delegate = self
+        charactersTableView.prefetchDataSource = self
         setupNavigationBar()
         setupTableView()
-        updateBarButtonItems()
-        fetchData(with: 1)
-    }
-    
-    @objc private func updatePageData(_ sender: UIBarButtonItem) {
-        currentPage += sender.tag == 1 ? 1 : -1
-        fetchData(with: currentPage)
+        fetchDataScrolling(with: 1)
     }
     
     // MARK: - Fetching Data
-    private func fetchData(with pageNumber: Int) {
-        charactersNetworkManager.getCharactersByPage(
+    private func fetchDataScrolling(with pageNumber: Int) {
+        isPaginating = true
+        paginationDataTask?.cancel()
+        guard pageNumber <= pagesCount else { return }
+        paginationDataTask = charactersNetworkManager.getCharactersByPage(
             number: pageNumber,
             completion: { [weak self] result in
                 DispatchQueue.main.async {
                     guard let self = self else { return }
-                    
                     switch result {
                     case .success(let charactersResponse):
                         self.pagesCount = charactersResponse.info.pages
+                        self.currentPage = pageNumber
                         self.charactersResponse = charactersResponse
-                        self.characters = charactersResponse.results
+                        if pageNumber > 1 {
+                            self.characters.append(contentsOf: charactersResponse.results)
+                        } else {
+                            self.characters = charactersResponse.results
+                        }
                         self.charactersTableView.reloadData()
-                        self.updateTitle()
                     case .failure(let error):
+                        if case .cancelled = error { break }
                         self.showAlert(title: error.title, message: error.description)
                     }
+                    self.isPaginating = false
                 }
             }
         )
@@ -100,23 +88,6 @@ class CharactersListViewController: UIViewController {
         
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Next",
-            style: .plain,
-            target: self,
-            action: #selector(updatePageData)
-        )
-        
-        navigationItem.rightBarButtonItem?.tag = 1
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Prev",
-            style: .plain,
-            target: self,
-            action: #selector(updatePageData)
-        )
-        navigationItem.titleView = titleLabel
     }
     
     private func setupTableView() {
@@ -129,23 +100,6 @@ class CharactersListViewController: UIViewController {
             charactersTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         charactersTableView.rowHeight = 60
-    }
-    
-    private func updateTitle() {
-        titleLabel.text = "Page \(currentPage)/\(pagesCount)"
-    }
-    
-    private func updateBarButtonItems() {
-        if currentPage <= 1 {
-            navigationItem.leftBarButtonItem?.isEnabled = false
-        } else {
-            navigationItem.leftBarButtonItem?.isEnabled = true
-        }
-        if currentPage == pagesCount {
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        } else {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-        }
     }
     
 }
@@ -168,12 +122,27 @@ extension CharactersListViewController: UITableViewDataSource {
 }
 
 // MARK: - TableView Delegate Methods
-extension CharactersListViewController: UITableViewDelegate {
+extension CharactersListViewController: UITableViewDelegate, UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let character = characters[indexPath.row]
         let characterInfoVC = CharacterInfoViewController()
         characterInfoVC.id = character.id
         navigationController?.pushViewController(characterInfoVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        if !isPaginating, indexPaths.map({ $0.row }).max() == characters.count - 1 {
+            fetchDataScrolling(with: currentPage + 1)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        if let paginationDataTask = paginationDataTask,
+           indexPaths.map({ $0.row }).max() == characters.count - 1
+        {
+            paginationDataTask.cancel()
+            isPaginating = false
+        }
     }
 }
