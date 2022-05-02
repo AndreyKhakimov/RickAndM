@@ -8,14 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0EC3A8C020897CF9E2CB4271 /* Pods_RickAndM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2DB5F823987B271747FCEFA /* Pods_RickAndM.framework */; };
+		426C86ED282039B500661D51 /* CharacterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426C86EC282039B500661D51 /* CharacterCell.swift */; };
 		42AD706A2808A24A00817752 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD70692808A24A00817752 /* AppDelegate.swift */; };
 		42AD706C2808A24A00817752 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD706B2808A24A00817752 /* SceneDelegate.swift */; };
 		42AD706E2808A24A00817752 /* CharactersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD706D2808A24A00817752 /* CharactersListViewController.swift */; };
 		42AD70732808A24C00817752 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42AD70722808A24C00817752 /* Assets.xcassets */; };
 		42AD70762808A24C00817752 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42AD70742808A24C00817752 /* LaunchScreen.storyboard */; };
 		42AD707E2808B02300817752 /* CharacterInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD707D2808B02300817752 /* CharacterInfoViewController.swift */; };
-		42AD70842808B71D00817752 /* CharacterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD70822808B71D00817752 /* CharacterTableViewCell.swift */; };
-		42AD70852808B71D00817752 /* CharacterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42AD70832808B71D00817752 /* CharacterTableViewCell.xib */; };
 		42AD708B2808BDAF00817752 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD708A2808BDAF00817752 /* RoundedImageView.swift */; };
 		42AD70912808C25D00817752 /* CharactersNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD70902808C25D00817752 /* CharactersNetworkManager.swift */; };
 		42AD70952808C2B800817752 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD70942808C2B800817752 /* NetworkError.swift */; };
@@ -29,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		3F3D672FCC12EDB86A54C547 /* Pods-RickAndM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RickAndM.debug.xcconfig"; path = "Target Support Files/Pods-RickAndM/Pods-RickAndM.debug.xcconfig"; sourceTree = "<group>"; };
+		426C86EC282039B500661D51 /* CharacterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCell.swift; sourceTree = "<group>"; };
 		42AD70662808A24A00817752 /* RickAndM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42AD70692808A24A00817752 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42AD706B2808A24A00817752 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,8 +37,6 @@
 		42AD70752808A24C00817752 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42AD70772808A24C00817752 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42AD707D2808B02300817752 /* CharacterInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoViewController.swift; sourceTree = "<group>"; };
-		42AD70822808B71D00817752 /* CharacterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterTableViewCell.swift; sourceTree = "<group>"; };
-		42AD70832808B71D00817752 /* CharacterTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CharacterTableViewCell.xib; sourceTree = "<group>"; };
 		42AD708A2808BDAF00817752 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		42AD70902808C25D00817752 /* CharactersNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharactersNetworkManager.swift; sourceTree = "<group>"; };
 		42AD70942808C2B800817752 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
@@ -126,8 +124,7 @@
 		42AD70812808B6E500817752 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				42AD70822808B71D00817752 /* CharacterTableViewCell.swift */,
-				42AD70832808B71D00817752 /* CharacterTableViewCell.xib */,
+				426C86EC282039B500661D51 /* CharacterCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -280,7 +277,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42AD70852808B71D00817752 /* CharacterTableViewCell.xib in Resources */,
 				42AD70762808A24C00817752 /* LaunchScreen.storyboard in Resources */,
 				42AD70732808A24C00817752 /* Assets.xcassets in Resources */,
 			);
@@ -335,6 +331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426C86ED282039B500661D51 /* CharacterCell.swift in Sources */,
 				42AD70912808C25D00817752 /* CharactersNetworkManager.swift in Sources */,
 				42AD70952808C2B800817752 /* NetworkError.swift in Sources */,
 				42AD709C2809E62300817752 /* Character.swift in Sources */,
@@ -345,7 +342,6 @@
 				42AD706E2808A24A00817752 /* CharactersListViewController.swift in Sources */,
 				42AD70A12809EEA200817752 /* UILabel.swift in Sources */,
 				42AD708B2808BDAF00817752 /* RoundedImageView.swift in Sources */,
-				42AD70842808B71D00817752 /* CharacterTableViewCell.swift in Sources */,
 				42AD706A2808A24A00817752 /* AppDelegate.swift in Sources */,
 				42AD706C2808A24A00817752 /* SceneDelegate.swift in Sources */,
 				42AD70B2280C4ECC00817752 /* UIViewController+Alert.swift in Sources */,

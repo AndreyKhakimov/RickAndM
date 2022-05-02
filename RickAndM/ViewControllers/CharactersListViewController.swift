@@ -11,7 +11,7 @@ class CharactersListViewController: UIViewController {
     
     private let charactersTableView: UITableView = {
         let tableview = UITableView()
-        tableview.register(UINib(nibName: "CharacterTableViewCell", bundle: nil), forCellReuseIdentifier: "Character")
+        tableview.register(CharacterTableViewCell.self, forCellReuseIdentifier: "CharacterCell")
         return tableview
     }()
     
@@ -111,7 +111,7 @@ extension CharactersListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Character", for: indexPath) as! CharacterTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CharacterTableViewCell.identifier, for: indexPath) as! CharacterTableViewCell
         let character = characters[indexPath.row]
         let imageURL = URL(string: character.image)
         cell.configure(image: imageURL, name: character.name, info: character.smallDescription)
