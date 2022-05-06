@@ -15,13 +15,6 @@ class CharactersListViewController: UIViewController {
         return tableview
     }()
     
-//    private let charactersNetworkManager = CharactersNetworkManager()
-//    private var characters = [Character]()
-//    private var charactersResponse: CharactersResponse?
-//    private var isPaginating = false
-//    private var paginationDataTask: URLSessionDataTask?
-//    private var currentPage = 1
-//    private var pagesCount = 1
     private var viewModel: CharactersListViewModelProtocol! {
         didSet {
                 charactersTableView.reloadData()
@@ -45,37 +38,6 @@ class CharactersListViewController: UIViewController {
         }
         viewModel.viewDidLoad()
     }
-    
-    // MARK: - Fetching Data
-//    private func fetchDataScrolling(with pageNumber: Int) {
-//        isPaginating = true
-//        paginationDataTask?.cancel()
-//        guard pageNumber <= pagesCount else { return }
-//        paginationDataTask = charactersNetworkManager.getCharactersByPage(
-//            number: pageNumber,
-//            completion: { [weak self] result in
-//                DispatchQueue.main.async {
-//                    guard let self = self else { return }
-//                    switch result {
-//                    case .success(let charactersResponse):
-//                        self.pagesCount = charactersResponse.info.pages
-//                        self.currentPage = pageNumber
-//                        self.charactersResponse = charactersResponse
-//                        if pageNumber > 1 {
-//                            self.characters.append(contentsOf: charactersResponse.results)
-//                        } else {
-//                            self.characters = charactersResponse.results
-//                        }
-//                        self.charactersTableView.reloadData()
-//                    case .failure(let error):
-//                        if case .cancelled = error { break }
-//                        self.showAlert(title: error.title, message: error.description)
-//                    }
-//                    self.isPaginating = false
-//                }
-//            }
-//        )
-//    }
     
     // MARK: - Setup Views
     private func setupNavigationBar() {
@@ -117,17 +79,13 @@ class CharactersListViewController: UIViewController {
 // MARK: - TableView Datasource Methods
 extension CharactersListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        characters.count
         viewModel.numberOfRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CharacterTableViewCell.identifier, for: indexPath) as! CharacterTableViewCell
         cell.characterCellViewModel = viewModel.characterCellViewModel(at: indexPath)
-//        let character = characters[indexPath.row]
-//        let character = viewModel.characters[indexPath.row]
-//        let imageURL = URL(string: character.image)
-//        cell.configure(image: imageURL, name: character.name, info: character.smallDescription)
+        
         return cell
     }
     
@@ -137,7 +95,6 @@ extension CharactersListViewController: UITableViewDataSource {
 // MARK: - TableView Delegate Methods
 extension CharactersListViewController: UITableViewDelegate, UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let character = characters[indexPath.row]
         let character = viewModel.characters[indexPath.row]
         let characterInfoVC = CharacterInfoViewController()
         characterInfoVC.id = character.id
@@ -147,8 +104,6 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if !viewModel.isPaginating, indexPaths.map({ $0.row }).max() == viewModel.characters.count - 1 {
-//        if !isPaginating, indexPaths.map({ $0.row }).max() == characters.count - 1 {
-//            fetchDataScrolling(with: currentPage + 1)
             viewModel.didScrollToPageEnd()
         }
     }
