@@ -11,6 +11,12 @@ import Kingfisher
 class CharacterInfoViewController: UIViewController {
     
     var id: Int?
+    var viewModel: CharacterInfoViewModelProtocol! {
+        didSet {
+            titleLabel.text = viewModel.characterDescription
+            characterImageView.kf.setImage(with:URL(string: viewModel.characterImage))
+        }
+    }
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -42,6 +48,7 @@ class CharacterInfoViewController: UIViewController {
         setupScrollView()
         setupViews()
         fetchData(with: id ?? 1)
+//        viewModel = CharacterInfoViewModel(character: <#T##Character#>)
     }
     
     private func fetchData(with id: Int) {

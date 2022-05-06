@@ -6,11 +6,23 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CharacterTableViewCell: UITableViewCell {
-
+    var characterCellViewModel: CharacterCellViewModelProtocol! {
+        didSet {
+            if let image = characterCellViewModel.characterImage {
+                characterImageView.kf.setImage(with: URL(string: image))
+            } else {
+                characterImageView.image = UIImage(systemName: "photo.artframe")
+            }
+            characterNameLabel.text = characterCellViewModel.characterName
+            characterInfoLabel.text = characterCellViewModel.characterSmallDescription
+        }
+    }
+    
     static let identifier = "CharacterCell"
-
+    
     private let characterImageView: UIImageView = {
         let imageView = RoundedImageView(frame: CGRect())
         return imageView
@@ -33,7 +45,7 @@ class CharacterTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -65,14 +77,14 @@ class CharacterTableViewCell: UITableViewCell {
         ])
     }
     
-    func configure(image: URL?, name: String, info: String) {
-        if let image = image {
-            characterImageView.kf.setImage(with: image)
-        } else {
-            characterImageView.image = UIImage(systemName: "photo.artframe")
-        }
-        characterNameLabel.text = name
-        characterInfoLabel.text = info
-    }
-
+    //    func configure(image: URL?, name: String, info: String) {
+    //        if let image = image {
+    //            characterImageView.kf.setImage(with: image)
+    //        } else {
+    //            characterImageView.image = UIImage(systemName: "photo.artframe")
+    //        }
+    //        characterNameLabel.text = name
+    //        characterInfoLabel.text = info
+    //    }
+    
 }

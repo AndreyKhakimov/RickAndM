@@ -15,13 +15,18 @@ class CharactersListViewController: UIViewController {
         return tableview
     }()
     
-    private let charactersNetworkManager = CharactersNetworkManager()
-    private var characters = [Character]()
-    private var charactersResponse: CharactersResponse?
-    private var isPaginating = false
-    private var paginationDataTask: URLSessionDataTask?
-    private var currentPage = 1
-    private var pagesCount = 1
+//    private let charactersNetworkManager = CharactersNetworkManager()
+//    private var characters = [Character]()
+//    private var charactersResponse: CharactersResponse?
+//    private var isPaginating = false
+//    private var paginationDataTask: URLSessionDataTask?
+//    private var currentPage = 1
+//    private var pagesCount = 1
+    private var viewModel: CharactersListViewModelProtocol! {
+        didSet {
+                charactersTableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,39 +38,44 @@ class CharactersListViewController: UIViewController {
         charactersTableView.prefetchDataSource = self
         setupNavigationBar()
         setupTableView()
-        fetchDataScrolling(with: 1)
+//        fetchDataScrolling(with: 1)
+        viewModel = CharactersListViewModel()
+        viewModel.viewModelDidChange = { [weak self] _ in
+            self?.charactersTableView.reloadData()
+        }
+        viewModel.viewDidLoad()
     }
     
     // MARK: - Fetching Data
-    private func fetchDataScrolling(with pageNumber: Int) {
-        isPaginating = true
-        paginationDataTask?.cancel()
-        guard pageNumber <= pagesCount else { return }
-        paginationDataTask = charactersNetworkManager.getCharactersByPage(
-            number: pageNumber,
-            completion: { [weak self] result in
-                DispatchQueue.main.async {
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let charactersResponse):
-                        self.pagesCount = charactersResponse.info.pages
-                        self.currentPage = pageNumber
-                        self.charactersResponse = charactersResponse
-                        if pageNumber > 1 {
-                            self.characters.append(contentsOf: charactersResponse.results)
-                        } else {
-                            self.characters = charactersResponse.results
-                        }
-                        self.charactersTableView.reloadData()
-                    case .failure(let error):
-                        if case .cancelled = error { break }
-                        self.showAlert(title: error.title, message: error.description)
-                    }
-                    self.isPaginating = false
-                }
-            }
-        )
-    }
+//    private func fetchDataScrolling(with pageNumber: Int) {
+//        isPaginating = true
+//        paginationDataTask?.cancel()
+//        guard pageNumber <= pagesCount else { return }
+//        paginationDataTask = charactersNetworkManager.getCharactersByPage(
+//            number: pageNumber,
+//            completion: { [weak self] result in
+//                DispatchQueue.main.async {
+//                    guard let self = self else { return }
+//                    switch result {
+//                    case .success(let charactersResponse):
+//                        self.pagesCount = charactersResponse.info.pages
+//                        self.currentPage = pageNumber
+//                        self.charactersResponse = charactersResponse
+//                        if pageNumber > 1 {
+//                            self.characters.append(contentsOf: charactersResponse.results)
+//                        } else {
+//                            self.characters = charactersResponse.results
+//                        }
+//                        self.charactersTableView.reloadData()
+//                    case .failure(let error):
+//                        if case .cancelled = error { break }
+//                        self.showAlert(title: error.title, message: error.description)
+//                    }
+//                    self.isPaginating = false
+//                }
+//            }
+//        )
+//    }
     
     // MARK: - Setup Views
     private func setupNavigationBar() {
@@ -107,14 +117,17 @@ class CharactersListViewController: UIViewController {
 // MARK: - TableView Datasource Methods
 extension CharactersListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        characters.count
+//        characters.count
+        viewModel.numberOfRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CharacterTableViewCell.identifier, for: indexPath) as! CharacterTableViewCell
-        let character = characters[indexPath.row]
-        let imageURL = URL(string: character.image)
-        cell.configure(image: imageURL, name: character.name, info: character.smallDescription)
+        cell.characterCellViewModel = viewModel.characterCellViewModel(at: indexPath)
+//        let character = characters[indexPath.row]
+//        let character = viewModel.characters[indexPath.row]
+//        let imageURL = URL(string: character.image)
+//        cell.configure(image: imageURL, name: character.name, info: character.smallDescription)
         return cell
     }
     
@@ -124,7 +137,8 @@ extension CharactersListViewController: UITableViewDataSource {
 // MARK: - TableView Delegate Methods
 extension CharactersListViewController: UITableViewDelegate, UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let character = characters[indexPath.row]
+//        let character = characters[indexPath.row]
+        let character = viewModel.characters[indexPath.row]
         let characterInfoVC = CharacterInfoViewController()
         characterInfoVC.id = character.id
         navigationController?.pushViewController(characterInfoVC, animated: true)
@@ -132,17 +146,19 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if !isPaginating, indexPaths.map({ $0.row }).max() == characters.count - 1 {
-            fetchDataScrolling(with: currentPage + 1)
+        if !viewModel.isPaginating, indexPaths.map({ $0.row }).max() == viewModel.characters.count - 1 {
+//        if !isPaginating, indexPaths.map({ $0.row }).max() == characters.count - 1 {
+//            fetchDataScrolling(with: currentPage + 1)
+            viewModel.didScrollToPageEnd()
         }
     }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-        if let paginationDataTask = paginationDataTask,
-           indexPaths.map({ $0.row }).max() == characters.count - 1
-        {
-            paginationDataTask.cancel()
-            isPaginating = false
-        }
+//        if let paginationDataTask = paginationDataTask,
+//           indexPaths.map({ $0.row }).max() == characters.count - 1
+//        {
+//            paginationDataTask.cancel()
+//            isPaginating = false
+//        }
     }
 }

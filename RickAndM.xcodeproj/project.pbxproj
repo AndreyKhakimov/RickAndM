@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0EC3A8C020897CF9E2CB4271 /* Pods_RickAndM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2DB5F823987B271747FCEFA /* Pods_RickAndM.framework */; };
 		426C86ED282039B500661D51 /* CharacterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426C86EC282039B500661D51 /* CharacterCell.swift */; };
+		426C86F028205D8900661D51 /* CharacterInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426C86EF28205D8900661D51 /* CharacterInfoViewModel.swift */; };
+		426C86F22820791800661D51 /* CharactersListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426C86F12820791800661D51 /* CharactersListViewModel.swift */; };
+		426C86F52821499300661D51 /* CharacterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426C86F42821499300661D51 /* CharacterCellViewModel.swift */; };
 		42AD706A2808A24A00817752 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD70692808A24A00817752 /* AppDelegate.swift */; };
 		42AD706C2808A24A00817752 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD706B2808A24A00817752 /* SceneDelegate.swift */; };
 		42AD706E2808A24A00817752 /* CharactersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD706D2808A24A00817752 /* CharactersListViewController.swift */; };
@@ -29,6 +32,9 @@
 /* Begin PBXFileReference section */
 		3F3D672FCC12EDB86A54C547 /* Pods-RickAndM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RickAndM.debug.xcconfig"; path = "Target Support Files/Pods-RickAndM/Pods-RickAndM.debug.xcconfig"; sourceTree = "<group>"; };
 		426C86EC282039B500661D51 /* CharacterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCell.swift; sourceTree = "<group>"; };
+		426C86EF28205D8900661D51 /* CharacterInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoViewModel.swift; sourceTree = "<group>"; };
+		426C86F12820791800661D51 /* CharactersListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListViewModel.swift; sourceTree = "<group>"; };
+		426C86F42821499300661D51 /* CharacterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCellViewModel.swift; sourceTree = "<group>"; };
 		42AD70662808A24A00817752 /* RickAndM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42AD70692808A24A00817752 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42AD706B2808A24A00817752 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,6 +76,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		426C86EE28205D5300661D51 /* CharacterInfo */ = {
+			isa = PBXGroup;
+			children = (
+				42AD707D2808B02300817752 /* CharacterInfoViewController.swift */,
+				426C86EF28205D8900661D51 /* CharacterInfoViewModel.swift */,
+			);
+			path = CharacterInfo;
+			sourceTree = "<group>";
+		};
+		426C86F32821497A00661D51 /* CharacterCell */ = {
+			isa = PBXGroup;
+			children = (
+				426C86EC282039B500661D51 /* CharacterCell.swift */,
+				426C86F42821499300661D51 /* CharacterCellViewModel.swift */,
+			);
+			path = CharacterCell;
+			sourceTree = "<group>";
+		};
 		42AD705D2808A24A00817752 = {
 			isa = PBXGroup;
 			children = (
@@ -91,8 +115,9 @@
 		42AD70682808A24A00817752 /* RickAndM */ = {
 			isa = PBXGroup;
 			children = (
+				426C86EE28205D5300661D51 /* CharacterInfo */,
 				42AD709A2809E60C00817752 /* Models */,
-				42AD707F2808B64900817752 /* ViewControllers */,
+				42AD707F2808B64900817752 /* CharactersList */,
 				42AD70AD280C224B00817752 /* Services */,
 				42AD70802808B6DB00817752 /* Views */,
 				42AD70A32809EEC000817752 /* Extensions */,
@@ -102,13 +127,14 @@
 			path = RickAndM;
 			sourceTree = "<group>";
 		};
-		42AD707F2808B64900817752 /* ViewControllers */ = {
+		42AD707F2808B64900817752 /* CharactersList */ = {
 			isa = PBXGroup;
 			children = (
 				42AD706D2808A24A00817752 /* CharactersListViewController.swift */,
-				42AD707D2808B02300817752 /* CharacterInfoViewController.swift */,
+				426C86F12820791800661D51 /* CharactersListViewModel.swift */,
+				426C86F32821497A00661D51 /* CharacterCell */,
 			);
-			path = ViewControllers;
+			path = CharactersList;
 			sourceTree = "<group>";
 		};
 		42AD70802808B6DB00817752 /* Views */ = {
@@ -116,17 +142,8 @@
 			children = (
 				42AD70742808A24C00817752 /* LaunchScreen.storyboard */,
 				42AD70892808BD7400817752 /* ImageViews */,
-				42AD70812808B6E500817752 /* Cells */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		42AD70812808B6E500817752 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				426C86EC282039B500661D51 /* CharacterCell.swift */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		42AD70892808BD7400817752 /* ImageViews */ = {
@@ -331,17 +348,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426C86F22820791800661D51 /* CharactersListViewModel.swift in Sources */,
 				426C86ED282039B500661D51 /* CharacterCell.swift in Sources */,
 				42AD70912808C25D00817752 /* CharactersNetworkManager.swift in Sources */,
 				42AD70952808C2B800817752 /* NetworkError.swift in Sources */,
 				42AD709C2809E62300817752 /* Character.swift in Sources */,
 				42AD70992808C2C800817752 /* NetworkManager.swift in Sources */,
+				426C86F52821499300661D51 /* CharacterCellViewModel.swift in Sources */,
 				42AD707E2808B02300817752 /* CharacterInfoViewController.swift in Sources */,
 				42AD70972808C2C400817752 /* EndpointProtocol.swift in Sources */,
 				42AD709F2809E68200817752 /* CharactersResponse.swift in Sources */,
 				42AD706E2808A24A00817752 /* CharactersListViewController.swift in Sources */,
 				42AD70A12809EEA200817752 /* UILabel.swift in Sources */,
 				42AD708B2808BDAF00817752 /* RoundedImageView.swift in Sources */,
+				426C86F028205D8900661D51 /* CharacterInfoViewModel.swift in Sources */,
 				42AD706A2808A24A00817752 /* AppDelegate.swift in Sources */,
 				42AD706C2808A24A00817752 /* SceneDelegate.swift in Sources */,
 				42AD70B2280C4ECC00817752 /* UIViewController+Alert.swift in Sources */,

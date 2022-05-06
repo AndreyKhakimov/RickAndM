@@ -18,6 +18,6 @@ protocol EndpointProtocol {
 extension EndpointProtocol {
     static var hostURL: String { NetworkManager.hostUrl }
     
-    var url: URL { URL(string: Self.hostURL + query)! }
+    var url: URL { URL(string: Self.hostURL + query) ?? URL(string: "")! }
     var httpMethod: String { "GET" }
 }
