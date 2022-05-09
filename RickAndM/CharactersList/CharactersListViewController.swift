@@ -15,10 +15,18 @@ class CharactersListViewController: UIViewController {
         return tableview
     }()
     
-    private var viewModel: CharactersListViewModelProtocol! {
-        didSet {
-                charactersTableView.reloadData()
+    private let viewModel: CharactersListViewModelProtocol
+    
+    init(viewModel: CharactersListViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.viewModelDidChange = { [weak self] in
+            self?.charactersTableView.reloadData()
         }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -31,11 +39,6 @@ class CharactersListViewController: UIViewController {
         charactersTableView.prefetchDataSource = self
         setupNavigationBar()
         setupTableView()
-//        fetchDataScrolling(with: 1)
-        viewModel = CharactersListViewModel()
-        viewModel.viewModelDidChange = { [weak self] _ in
-            self?.charactersTableView.reloadData()
-        }
         viewModel.viewDidLoad()
     }
     
@@ -97,7 +100,7 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let character = viewModel.characters[indexPath.row]
         let characterInfoVC = CharacterInfoViewController()
-        characterInfoVC.id = character.id
+        characterInfoVC.viewModel = CharacterInfoViewModel(id: character.id)
         navigationController?.pushViewController(characterInfoVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -109,11 +112,10 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-//        if let paginationDataTask = paginationDataTask,
-//           indexPaths.map({ $0.row }).max() == characters.count - 1
-//        {
-//            paginationDataTask.cancel()
-//            isPaginating = false
-//        }
+        if let _ = viewModel.paginationDataTask,
+           indexPaths.map({ $0.row }).max() == viewModel.characters.count - 1
+        {
+            viewModel.cancelFetchingData()
+        }
     }
 }

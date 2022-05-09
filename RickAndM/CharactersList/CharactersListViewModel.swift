@@ -7,44 +7,37 @@
 
 import Foundation
 
-protocol CharactersListViewModelProtocol {
+protocol CharactersListViewModelProtocol: AnyObject {
     var characters: [Character] { get }
     var isPaginating: Bool { get set }
+    var paginationDataTask: URLSessionDataTask? { get }
     var currentPage: Int { get set }
     var pagesCount: Int { get }
-    var viewModelDidChange: ((CharactersListViewModelProtocol) -> Void)? { get set }
+    var viewModelDidChange: (() -> Void)? { get set }
     
     func fetchCharacters(with pageNumber: Int, completion: @escaping() -> Void)
     func numberOfRows() -> Int
     func characterCellViewModel(at indexPath: IndexPath) -> CharacterCellViewModelProtocol
     func viewDidLoad()
     func didScrollToPageEnd()
+    func cancelFetchingData()
 }
 
 class CharactersListViewModel: CharactersListViewModelProtocol {
     
-    var characters = [Character]() {
-        didSet {
-            print(characters.count)
-        }
-    }
+    var characters = [Character]()
     
     private let charactersNetworkManager = CharactersNetworkManager()
     var isPaginating = false
-    private var paginationDataTask: URLSessionDataTask?
+    var paginationDataTask: URLSessionDataTask?
     var currentPage = 1
     var pagesCount = 1
-    var viewModelDidChange: ((CharactersListViewModelProtocol) -> Void)?
+    var viewModelDidChange: (() -> Void)?
     
     func viewDidLoad() {
         fetchCharacters(with: currentPage) {}
     }
     
-    func didScrollToPageEnd() {
-        fetchCharacters(with: currentPage + 1) { [weak self] in
-            self?.currentPage += 1
-        }
-    }
     
     func fetchCharacters(with pageNumber: Int, completion: @escaping() -> Void) {
         isPaginating = true
@@ -67,13 +60,25 @@ class CharactersListViewModel: CharactersListViewModelProtocol {
                         completion()
                     case .failure(let error):
                         if case .cancelled = error { break }
+                        // TODO: - Fix showing alert issue
 //                        self.showAlert(title: error.title, message: error.description)
                     }
                     self.isPaginating = false
-                    self.viewModelDidChange?(self)
+                    self.viewModelDidChange?()
                 }
             }
         )
+    }
+    
+    func didScrollToPageEnd() {
+        fetchCharacters(with: currentPage + 1) { [weak self] in
+            self?.currentPage += 1
+        }
+    }
+    
+    func cancelFetchingData() {
+        paginationDataTask?.cancel()
+        isPaginating = false
     }
     
     func numberOfRows() -> Int {

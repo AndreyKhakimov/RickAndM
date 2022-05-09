@@ -10,7 +10,6 @@ import Kingfisher
 
 class CharacterInfoViewController: UIViewController {
     
-    var id: Int?
     var viewModel: CharacterInfoViewModelProtocol! {
         didSet {
             titleLabel.text = viewModel.characterDescription
@@ -47,28 +46,11 @@ class CharacterInfoViewController: UIViewController {
         view.addSubview(characterImageView)
         setupScrollView()
         setupViews()
-        fetchData(with: id ?? 1)
-//        viewModel = CharacterInfoViewModel(character: <#T##Character#>)
-    }
-    
-    private func fetchData(with id: Int) {
-        characterNetworkManager.getCharacter(
-            id: id,
-            completion: { [weak self] result in
-                DispatchQueue.main.async {
-                    guard let self = self else { return }
-                    
-                    switch result {
-                    case .success(let character):
-                        self.character = character
-                        self.titleLabel.text = character.description
-                        self.characterImageView.kf.setImage(with:URL(string: character.image))
-                    case .failure(let error):
-                        self.showAlert(title: error.title, message: error.description)
-                    }
-                }
-            }
-        )
+        viewModel.viewModelDidChange = { [weak self] _ in
+            self?.titleLabel.text = self?.viewModel.characterDescription
+            self?.characterImageView.kf.setImage(with:URL(string: self?.viewModel?.characterImage ?? ""))
+        }
+        viewModel.viewDidLoad()
     }
     
 }
